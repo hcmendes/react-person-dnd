@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import ErrorBoundary from './ErrorBoundary'
+import Column from './components/column/column';
+import initialData from './initial-data';
+
+class App extends React.Component {
+  state = initialData;
+
+  render() {
+    return this.state.columnOrder.map((columnId) => {
+      const column = this.state.columns[columnId];
+      const columnPeople = column.peopleIds.map((personId) => this.state.people[personId]);
+
+      return (
+        <ErrorBoundary>
+          <Column key={columnId} people={columnPeople} column={column} />;
+        </ErrorBoundary>
+      )
+    })
+  }
 }
 
 export default App;
